@@ -1,0 +1,138 @@
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN" "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+    <constant name="struts.devMode" value="true" />
+
+    <package name="default" namespace="/" extends="struts-default">
+        <default-interceptor-ref name="defaultStack" />
+
+        <action name="login" class="com.examemed.action.LoginAction" method="execute">
+            <result name="success" type="redirectAction">listarFuncionarios</result>
+            <result name="input">/login.jsp</result>
+            <result name="error">/WEB-INF/jsp/error.jsp</result>
+        </action>
+
+        <action name="register" class="com.examemed.action.RegisterAction" method="register">
+            <result name="success" type="redirect">/login.jsp</result>
+            <result name="input">/register.jsp</result>
+            <result name="error">/error.jsp</result>
+        </action>
+
+        <action name="listarFuncionarios" class="com.examemed.action.FuncionarioAction" method="listar">
+            <result name="success">/WEB-INF/jsp/funcionarios.jsp</result>
+            <result name="error">/WEB-INF/jsp/error.jsp</result>
+        </action>
+        
+        <action name="adicionarFuncionario" class="com.examemed.action.FuncionarioAction" method="adicionar">
+            <result name="success" type="redirectAction">listarFuncionarios</result>
+            <result name="error">/WEB-INF/jsp/funcionarios.jsp</result>
+        </action>
+        
+        <action name="atualizarFuncionario" class="com.examemed.action.FuncionarioAction" method="atualizar">
+            <result name="success" type="redirectAction">listarFuncionarios</result>
+            <result name="error">/WEB-INF/jsp/funcionarios.jsp</result>
+        </action>
+        
+        <action name="deletarFuncionario" class="com.examemed.action.FuncionarioAction" method="deletar">
+            <result name="success" type="redirectAction">listarFuncionarios</result>
+            <result name="error">/WEB-INF/jsp/funcionarios.jsp</result>
+        </action>
+
+        <action name="listarExames" class="com.examemed.action.ExameAction" method="listar">
+            <result name="success">/WEB-INF/jsp/exames.jsp</result>
+            <result name="error">/WEB-INF/jsp/error.jsp</result>
+        </action>
+        
+        <action name="adicionarExame" class="com.examemed.action.ExameAction" method="adicionar">
+            <result name="success" type="redirectAction">listarExames</result>
+            <result name="error">/WEB-INF/jsp/exames.jsp</result>
+        </action>
+        
+        <action name="atualizarExame" class="com.examemed.action.ExameAction" method="atualizar">
+            <result name="success" type="redirectAction">listarExames</result>
+            <result name="error">/WEB-INF/jsp/exames.jsp</result>
+        </action>
+        
+        <action name="deletarExame" class="com.examemed.action.ExameAction" method="deletar">
+            <result name="success" type="redirectAction">listarExames</result>
+            <result name="error">/WEB-INF/jsp/exames.jsp</result>
+        </action>
+
+        <action name="listarExamesRealizados" class="com.examemed.action.ExameRealizadoAction" method="listar">
+            <result name="success">/WEB-INF/jsp/exames_realizados.jsp</result>
+            <result name="error">/WEB-INF/jsp/error.jsp</result>
+        </action>
+
+        <action name="gerarExamesRealizadosPDF" class="com.examemed.action.ExameRealizadoPdfAction">
+            <result type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">pdfStream</param>
+                <param name="contentDisposition">inline;filename=exames_realizados.pdf</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/WEB-INF/jsp/error.jsp</result>
+        </action>
+
+        <action name="generatePdf" class="com.examemed.action.GeneratePdfAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">pdfStream</param>
+                <param name="contentDisposition">inline;filename=exame.pdf</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/WEB-INF/jsp/error.jsp</result>
+        </action>
+
+        <action name="showGeneratePdfForm" class="com.opensymphony.xwork2.ActionSupport">
+            <result name="success">/WEB-INF/jsp/generatePdfForm.jsp</result>
+        </action>
+
+        <action name="associarFuncionario" class="com.examemed.action.ExameAction" method="associarFuncionario">
+            <result name="success" type="redirectAction">listarExames</result>
+            <result name="error">/WEB-INF/jsp/exames.jsp</result>
+        </action>
+    </package>
+
+    <package name="global" namespace="/" extends="struts-default">
+        <global-results>
+            <result name="error">/WEB-INF/jsp/error.jsp</result>
+            <result name="login">/login.jsp</result>
+            <result name="timeout" type="redirect">/login.jsp</result>
+        </global-results>
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exception" result="error" />
+        </global-exception-mappings>
+    </package>
+
+    <package name="secure" namespace="/" extends="struts-default">
+        <interceptors>
+            <interceptor name="auth" class="com.examemed.interceptor.AuthenticationInterceptor" />
+            <interceptor name="sessionTimeout" class="com.examemed.interceptor.SessionTimeoutInterceptor" />
+            <interceptor-stack name="secureStack">
+                <interceptor-ref name="auth" />
+                <interceptor-ref name="sessionTimeout" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="secureStack" />
+
+        <action name="listarFuncionarios" class="com.examemed.action.FuncionarioAction" method="listar">
+            <result name="success">/WEB-INF/jsp/funcionarios.jsp</result>
+            <result name="error">/WEB-INF/jsp/error.jsp</result>
+        </action>
+
+        <action name="listarExames" class="com.examemed.action.ExameAction" method="listar">
+            <result name="success">/WEB-INF/jsp/exames.jsp</result>
+            <result name="error">/WEB-INF/jsp/error.jsp</result>
+        </action>
+
+        <action name="listarExamesRealizados" class="com.examemed.action.ExameRealizadoAction" method="listar">
+            <result name="success">/WEB-INF/jsp/exames_realizados.jsp</result>
+            <result name="error">/WEB-INF/jsp/error.jsp</result>
+        </action>
+
+        <action name="listarExamesRealizadosPorIntervalo" class="com.examemed.action.ExameRealizadoAction" method="listarPorIntervalo">
+            <result name="success">/WEB-INF/jsp/exames_realizados.jsp</result>
+            <result name="error">/WEB-INF/jsp/error.jsp</result>
+        </action>
+    </package>
+</struts>
