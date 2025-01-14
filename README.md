@@ -67,7 +67,7 @@ Ajuste as configurações de conexão com o banco de dados no arquivo de configu
 
 ## Screenshots
 
-![App Screenshot](https://i.postimg.cc/hPybJWJY/login.png/468x300?text=App+Screenshot+Here)
+![App Screenshot](https://i.postimg.cc/hPybJWJY/login.png)
 
 ![App Screenshot](https://i.postimg.cc/SNNfNNK8/tabela.png/login.png/468x300?text=App+Screenshot+Here)
 ## 🚀 Sobre mim
